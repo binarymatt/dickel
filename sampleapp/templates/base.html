@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<title>Dickel Framework - named after a drink i must have been drinking when I created another wsgi framework</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	</head>
+<body>
+	<div class="container">
+		<div id="header" class="span-24">
+			{% block header %}Dickel Application{%endblock%}
+		</div>
+		<div class="span-24" id="content">
+			{% block content %}{% endblock%}
+		</div>
+		<hr>
+		<div class="span-24">
+			{%block footer%}
+			&copy; Matt George
+			{% endblock %}
+		</div>	
+	</div>
+
+</body>
+</html>
