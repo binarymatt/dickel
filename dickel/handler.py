@@ -4,6 +4,7 @@ from dickel.dispatch import Dispatcher
 from dickel.config import settings
 import os
 import logging
+
 class DickelApp(object):
     def __init__(self, app=None, urls=None):
         if app is None:
@@ -17,21 +18,24 @@ class DickelApp(object):
         
         self.app = SessionMiddleware(self.app, key='key', secret='secret')
         self.dispatcher = Dispatcher()
-        logging.basicConfig(format='%(asctime)s %(levelname)s %(module)s.%(funcName)s:%(lineno)d - %(message)s',level=logging.INFO)
+        logging.basicConfig(format='%(asctime)s %(levelname)s %(module)s.%(funcName)s:%(lineno)d - %(message)s',level=logging.DEBUG)
 
         self.log = logging.getLogger('dickel.app')
+        if settings.DEBUG:
+            logging.getLogger('dickel.dispatch').setLevel(logging.DEBUG)
         self.log.setLevel(logging.DEBUG)
         if urls is None:
+            urls = getattr(settings, 'URLS',[])
+        apps = getattr(settings,'APPS')
+        for app in apps:
             try:
-                self.log.debug("Setting up settings module")
-                settings_module = os.environ["DICKEL_MOD"]
-                mod = __import__(settings_module, {}, {}, [''])
-                urls = getattr(mod, 'URLS')
-                self.log.debug("Installed urls %s" % str(urls))
-            except KeyError:
-                raise KeyError, "Problem importing urls tuple"
+                __import__('%s.controller'% app, {}, {}, [''])
+            except:
+                if settings.DEBUG:
+                    self.log.exception("error")
+                pass
         for a,b in urls:
-            self.dispatcher.route(a,b)
+            Dispatcher.route(a,b)
         
     def __call__(self, environ, start_response):
         return self.app(environ, start_response)

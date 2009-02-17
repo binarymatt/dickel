@@ -1,4 +1,5 @@
 import logging, sys, os
+from webob.exc import *
 def response_redirect(request, redirect_to):
     from webob.exc import HTTPFound
     excep = HTTPFound(location=redirect_to)
@@ -51,7 +52,7 @@ def serve_static(request, file_name):
     import sys, os
     from dickel.config import settings
     from webob import Response
-    from webob.exc import *
+    
     response = Response()
     settings_dir = getattr(settings, 'STATIC_DIR', None)
     file_path = os.path.join(settings_dir, file_name)
