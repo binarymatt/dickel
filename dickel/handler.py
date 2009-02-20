@@ -2,6 +2,7 @@
 from webob import Request, Response
 from dickel.dispatch import Dispatcher
 from dickel.config import settings
+from utilities import Flash
 import os
 import logging
 
@@ -43,7 +44,7 @@ class DickelApp(object):
     def _internal_app(self, environ, start_response):
         from dickel.config import settings
         request = Request(environ)
-        
+        request.flash = Flash()
         if environ.has_key('dickel.samiddleware'):
             request.sa_session = environ['dickel.samiddleware']
         if environ.has_key('beaker.session'):

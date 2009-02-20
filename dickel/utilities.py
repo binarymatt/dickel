@@ -41,6 +41,7 @@ def return_response(request, dictionary={}, template_name=None):
     from jinja2 import Environment, FileSystemLoader
     env = Environment(loader=FileSystemLoader(template_dir))
     template = env.get_template(template_name)
+    dictionary['flash'] = request.flash
     
     body = template.render(dictionary)
     response = Response()
@@ -68,3 +69,27 @@ def serve_static(request, file_name):
     else:
         excep = HTTPNotFound()
         return request.get_response(excep)
+
+class Flash(dict):
+    # make two commonly used flashes available as attributes
+    def _get_error(self):
+        return self.get('error', "")
+    def _set_error(self, v):
+        self.update({'error': v})
+    error = property(_get_error, _set_error)
+    def _get_notice(self):
+        return self.get('notice','')
+    def _set_notice(self, v):
+        self.update({'notice':v})
+    notice = property(_get_notice, _set_notice)
+
+    # allow {% for msg in flash %}{{ msg.type }}: {{ msg.msg }}{% endfor %}
+    # this may not be necessary in newer versions of django where you should be
+    # able to do: {% for key, value in flash %}{{ key }}: {{ value }}{% endfor %}
+    def __iter__(self):
+        for item in self.keys():
+            yield {'type': item, 'msg': self[item]}
+
+    # evaluate to True if there is at least one non-empty message
+    def __nonzero__(self):
+        return len(str(self)) > 0
