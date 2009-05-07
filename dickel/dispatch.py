@@ -72,13 +72,14 @@ class Dispatcher(object):
         #if isinstance(view, basestring):
         controller = LazyController(view)
         global _routes
-        tup = (re.compile(regex), controller)
+        #tup = (re.compile(regex), controller)
+        tup = (regex, controller)
         _routes.append(tup)
         
     def dispatch(self, request):
         log.debug("trying to dispatch on: %s" % request.path)
         for regex, controller in _routes:
-            match = regex.match(request.path)
+            match = re.match(regex, request.path)
             if match:
                 log.debug("match found, calling controller")
                 kwargs = match.groupdict()

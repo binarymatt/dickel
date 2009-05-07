@@ -24,8 +24,8 @@ def return_response(request, dictionary={}, template_name=None):
     """
     from webob import Response
     from dickel.config import settings
+    dictionary['request'] = request
     template_dir = settings.TEMPLATE_DIRECTORY
-    
     logging.debug(template_dir)
     #response = Response()
     if template_name is None:

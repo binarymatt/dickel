@@ -1,6 +1,7 @@
 #from dickel import Request, Response
 from webob import Request, Response
 from dickel.dispatch import Dispatcher
+from dickel.dispatch import _routes
 from dickel.config import settings
 from utilities import Flash
 import os
@@ -44,7 +45,8 @@ class DickelApp(object):
     def _internal_app(self, environ, start_response):
         from dickel.config import settings
         request = Request(environ)
-        request.flash = Flash()
+        
+        #request.flash = Flash()
         if environ.has_key('dickel.samiddleware'):
             request.sa_session = environ['dickel.samiddleware']
         if environ.has_key('beaker.session'):
@@ -92,7 +94,8 @@ class DickelApp(object):
                     'headers':request.headers,
                     'get_vars':request.GET,
                     'post_vars':request.POST,
-                    'urls':settings.URLS
+                    'urls':_routes,
+                    'session':request.session
                 }
                 body = template.render(dictionary)
                 response = Response(body=body)

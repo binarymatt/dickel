@@ -48,7 +48,11 @@
 					{{url}}<br />
 				{% endfor %}
 			</div>
-			<div class='section' id='settings'>
+			<div class='section' id='session'>
+				<h2>Session</h2>
+				{% for key, value in session.items() %}
+					{{key}} - {{value}}
+				{% endfor %}
 			</div>
 		</div>
 		<hr>
