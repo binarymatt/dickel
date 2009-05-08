@@ -9,7 +9,5 @@ Dickel
 
 Requirements
 ------------
-* SqlAlchemy.
-* WebOb for the Request and Response.
-* Beaker for the session middleware.
+* None
 
