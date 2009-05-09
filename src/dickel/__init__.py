@@ -12,7 +12,7 @@ class Request(object):
     def __init__(self, environ):
         self._environ = environ
         self.method = environ.get('REQUEST_METHOD')
-        self._path = environ.get('PATH_INFO','')
+        self.path = environ.get('PATH_INFO','')
         self._query_string = environ.get('QUERY_STRING','')
 
         self.POST = self.GET = None
@@ -130,7 +130,7 @@ class Response(object):
     headers = property(_headers_get, _headers_set)
         
     def __call__(self):
-        return [self.body]
+        return [self.content]
 
-from handler import DickelApp
-__all__ = ['Request','Response','DickelApp']
+from handler import Application
+__all__ = ['Request','Response','Application']

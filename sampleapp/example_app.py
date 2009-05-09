@@ -1,10 +1,15 @@
-from dickel import DickelApp
 if __name__ == "__main__":
     import os, sys
-    path = os.path.realpath(os.path.join('../',os.path.dirname(__file__)))
+    path = os.path.realpath(os.path.join('../src/',os.path.dirname(__file__)))
+    print path
     sys.path.append(path)
-    os.environ["DICKEL_MOD"] = 'sampleapp.settings'
-    app = DickelApp()
+    from dickel import Application
+    from views import hello_world
+    urls = (
+        (r'^/hello$', hello_world),
+        (r'^/world$','views.hello_world'),
+    )
+    app = Application(urls)
     try:
         from werkzeug import run_simple
         run_simple('localhost', 8000, app, use_reloader=True)

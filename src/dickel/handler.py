@@ -2,11 +2,10 @@
 from dickel import Request, Response
 from dickel.dispatch import Dispatcher
 
-from utilities import Flash
 import os
 import logging
 
-class DickelApp(object):
+class Application(object):
     def __init__(self, urls=None):
         self.dispatcher = Dispatcher()
         logging.basicConfig(format='%(asctime)s %(levelname)s %(module)s.%(funcName)s:%(lineno)d - %(message)s',level=logging.DEBUG)
@@ -29,7 +28,9 @@ class DickelApp(object):
     
     def get_response(self, request):
         try:
+            self.log.debug("Trying dispatcher")
             response = self.dispatcher.dispatch(request)
         except Exception, inst:
+            self.log.exception('errors')
             response = Response(content='<h1>Page Not Found</h1>', status=404)
         return response
