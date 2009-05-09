@@ -67,7 +67,8 @@ class Dispatcher(object):
         regex - is the regular expression that is used to map a view to a path
         view - module.func that is used to process the request object and create response
         """
-        log.debug("route: %s" % regex)
+        print regex
+        log.info("route: %s" % regex)
         log.debug("view: %s" % view)
         #if isinstance(view, basestring):
         controller = LazyController(view)
