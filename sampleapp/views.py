@@ -1,4 +1,4 @@
-from dickel import Response
+from webob import Response
 from dickel.decorators import route
 import logging
 

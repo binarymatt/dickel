@@ -6,9 +6,9 @@ except ImportError:
 
 __version__ = ('0', '2', '0')
 __license__ = 'MIT'
-
+"""
 class Request(object):
-    """environ wrapper"""
+    #environ wrapper
     def __init__(self, environ):
         self._environ = environ
         self.method = environ.get('REQUEST_METHOD')
@@ -131,6 +131,6 @@ class Response(object):
         
     def __call__(self):
         return [self.content]
-
+"""
 from handler import Application
-__all__ = ['Request','Response','Application']
+__all__ = ['Application']

@@ -22,11 +22,16 @@ class LazyController(object):
             mod = '.'.join(mod)
             func_name = mod_list[-1]
         else:
-            #i'm not sure what this would mean
-            pass
-        __import__(mod)
-        module = sys.modules[mod]
-        func = getattr(module, func_name)
+            #i'm not sure what to do here right now. Need to find the parent module
+            #of the function name
+            mod = None
+            func = string
+            raise Exception('Need to have a module defined')
+            
+        if mod:
+            __import__(mod)
+            module = sys.modules[mod]
+            func = getattr(module, func_name)
         return func
     def __call__(self):
         if not self._mod:

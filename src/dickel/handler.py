@@ -1,5 +1,8 @@
 #from dickel import Request, Response
-from dickel import Request, Response
+#from dickel import Request, Response
+from webob import Request, Response
+from webob.exc import *
+
 from dickel.dispatch import Dispatcher
 
 import os
@@ -17,14 +20,16 @@ class Application(object):
             Dispatcher.route(a,b)
         
     def __call__(self, environ, start_response):
+        #request = Request(environ)
+        #return request.get_response(self._internal_app)
         return self._internal_app(environ, start_response)
 
     def _internal_app(self, environ, start_response):
         request = Request(environ)
-        
         response = self.get_response(request)
-        start_response(response.status, response.headers)
-        return response.content
+        return response(environ, start_response)
+        #start_response(response.status, response.headers)
+        #return response.content
     
     def get_response(self, request):
         try:
@@ -32,5 +37,6 @@ class Application(object):
             response = self.dispatcher.dispatch(request)
         except Exception, inst:
             self.log.exception('errors')
-            response = Response(content='<h1>Page Not Found</h1>', status=404)
+            exc = HTTPNotFound()
+            response = request.get_response(exc)
         return response

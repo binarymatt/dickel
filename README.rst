@@ -7,7 +7,7 @@ Dickel
   would decide to create yet another web framework.
 * See the sampleapp directory for a simple wsgi application that runs with Dickel
 
-Requirements
+Dependencies
 ------------
-* None
+* webob - because Ian Bicking did a better job.
 
